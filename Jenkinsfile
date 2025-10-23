@@ -12,19 +12,19 @@ pipeline{
 }
     stage('Build'){
       steps{
-        sh 'mvn clean package -DskipTests'
+        bat 'mvn clean package -DskipTests'
       }
     }
     stage('Build Docker Image'){
       steps{
-        sh 'docker build -t springboot-devops-demo:latest .'
+        bat 'docker build -t springboot-devops-demo:latest .'
       }
     }
     stage('Run Docker Container'){
       steps{
-        sh ''' 
-          docker stop springboot-devops-demo || true
-          docker rm springboot-devops-demo || true
+        bat ''' 
+          docker stop springboot-devops-demo || exit 0
+          docker rm springboot-devops-demo || exit 0
           docker run -d -p 9090:8081 --name springboot-devops-demo springboot-devops-demo:latest
           '''
       }
